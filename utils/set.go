@@ -2,7 +2,7 @@ package utils
 
 import "sync"
 
-type SetItem map[string]struct{}
+type SetItem map[interface{}]struct{}
 
 type Set struct {
 	SetItem
@@ -17,23 +17,23 @@ func NewSet() *Set {
 	}
 }
 
-func (s *Set) Add(str string) {
-	if !s.Has(str) {
+func (s *Set) Add(key interface{}) {
+	if !s.Has(key) {
 		s.lock.Lock()
 		defer s.lock.Unlock()
-		s.SetItem[str] = struct{}{}
+		s.SetItem[key] = struct{}{}
 	}
 }
 
-func (s *Set) Has(str string) bool {
+func (s *Set) Has(key interface{}) bool {
 	s.lock.RLock()
 	defer s.lock.RUnlock()
-	_, ok := s.SetItem[str]
+	_, ok := s.SetItem[key]
 	return ok
 }
 
-func (s *Set) ToArray() (res []string) {
-	res = make([]string, 0, s.Len())
+func (s *Set) ToArray() (res []interface{}) {
+	res = make([]interface{}, 0, s.Len())
 	for key := range s.SetItem {
 		res = append(res, key)
 	}
@@ -46,13 +46,13 @@ func (s *Set) Len() int {
 	return len(s.SetItem)
 }
 
-func (s *Set) Remove(str string) bool {
-	if !s.Has(str) {
+func (s *Set) Remove(key interface{}) bool {
+	if !s.Has(key) {
 		return false
 	} else {
 		s.lock.Lock()
 		defer s.lock.Unlock()
-		delete(s.SetItem, str)
+		delete(s.SetItem, key)
 	}
 	return true
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"os"
+	"path"
 )
 
 type (
@@ -29,14 +30,18 @@ func preState() Path {
 	return prevStatus
 }
 
-func loadModel() (start HmmStart, trans, emit HmmTran) {
+func loadModel(probPath ...string) (start HmmStart, trans, emit HmmTran) {
 	var probStart = HmmStart{}
 	probStart['B'] = -0.26268660809250016
 	probStart['E'] = -3.14e+100
 	probStart['M'] = -3.14e+100
 	probStart['S'] = -1.4652633398537678
-	var probTrans = loadEach("trans.prob")
-	var probEmit = loadEach("emit.prob")
+	var basePath string
+	if len(probPath) > 0 {
+		basePath = probPath[0]
+	}
+	var probTrans = loadEach(path.Base(basePath + "/trans.prob"))
+	var probEmit = loadEach(path.Base(basePath + "/emit.prob"))
 
 	return probStart, probTrans, probEmit
 }
@@ -48,6 +53,7 @@ func loadEach(file string) (ht HmmTran) {
 	}()
 	if e != nil {
 		fmt.Println(e)
+		return
 	}
 	decoder := gob.NewDecoder(f)
 	if err := decoder.Decode(&ht); err != nil {

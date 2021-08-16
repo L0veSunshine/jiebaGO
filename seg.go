@@ -1,10 +1,10 @@
 package jiebaGo
 
 import (
+	"github.com/jiebaGo/finalseg"
+	"github.com/jiebaGo/utils"
 	"math"
 	"unicode/utf8"
-	"xuan/jiebaGo/finalseg"
-	"xuan/jiebaGo/utils"
 )
 
 const (
@@ -20,9 +20,13 @@ type Tokenizer struct {
 	specFlag             *utils.Set
 }
 
-func NewTokenizer() *Tokenizer {
-	pd := load()
-	fs := finalseg.NewFinalSeg()
+func NewTokenizer(DirPath string, probPath ...string) *Tokenizer {
+	pd := load(DirPath)
+	var args string
+	if len(probPath) > 0 {
+		args = probPath[0]
+	}
+	fs := finalseg.NewFinalSeg(args)
 	return &Tokenizer{
 		dict:   pd,
 		hmmSeg: fs,

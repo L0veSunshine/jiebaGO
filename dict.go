@@ -10,10 +10,6 @@ import (
 	"unicode/utf8"
 )
 
-var (
-	DirPath = "C:/Users/Xuan/Desktop/dict.txt"
-)
-
 type (
 	Item map[string]Value
 
@@ -75,8 +71,8 @@ func (i Item) addRecur(key string) {
 	}
 }
 
-func load() *PrefixDict {
-	f, e := os.Open(DirPath)
+func load(DictPath string) *PrefixDict {
+	f, e := os.Open(DictPath)
 	if e != nil {
 		fmt.Println(e)
 	}

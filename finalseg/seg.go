@@ -1,6 +1,6 @@
 package finalseg
 
-import "xuan/jiebaGo/utils"
+import "github.com/jiebaGo/utils"
 
 type FinalSeg struct {
 	start           HmmStart
@@ -9,8 +9,8 @@ type FinalSeg struct {
 	ForceSplit      *utils.Set
 }
 
-func NewFinalSeg() *FinalSeg {
-	start, trans, emit := loadModel()
+func NewFinalSeg(probPath ...string) *FinalSeg {
+	start, trans, emit := loadModel(probPath...)
 	return &FinalSeg{
 		start:      start,
 		trans:      trans,

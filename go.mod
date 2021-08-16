@@ -1,1 +1,1 @@
-module "xuan/jiebaGo"
+module "github.com/jiebaGo"

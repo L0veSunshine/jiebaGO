@@ -3,9 +3,9 @@ package jiebaGo
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jiebaGo/utils"
 	"strconv"
 	"unicode/utf8"
-	"xuan/jiebaGo/utils"
 )
 
 type (
